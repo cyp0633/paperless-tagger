@@ -60,7 +60,7 @@ func (c *PaperlessClient) do(req *http.Request) (*http.Response, error) {
 
 // CheckAvailability tests the connection to Paperless-ngx
 func (c *PaperlessClient) CheckAvailability() CheckResult {
-	req, err := c.newRequest("GET", "/api/", nil)
+	req, err := c.newRequest("GET", "/api/profile/", nil)
 	if err != nil {
 		return CheckResult{OK: false, Message: err.Error()}
 	}
@@ -69,10 +69,25 @@ func (c *PaperlessClient) CheckAvailability() CheckResult {
 		return CheckResult{OK: false, Message: err.Error()}
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusFound {
-		return CheckResult{OK: true, Message: fmt.Sprintf("Connected (HTTP %d)", resp.StatusCode)}
+
+	if resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden {
+		return CheckResult{OK: false, Message: fmt.Sprintf("Authentication failed (HTTP %d): invalid API key for this Paperless server", resp.StatusCode)}
 	}
-	return CheckResult{OK: false, Message: fmt.Sprintf("Unexpected status: %d", resp.StatusCode)}
+	if resp.StatusCode != http.StatusOK {
+		return CheckResult{OK: false, Message: fmt.Sprintf("Unexpected status: %d", resp.StatusCode)}
+	}
+
+	var profile struct {
+		Username string `json:"username"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&profile); err != nil {
+		return CheckResult{OK: false, Message: fmt.Sprintf("Connected but invalid response from /api/profile/: %v", err)}
+	}
+	if profile.Username == "" {
+		return CheckResult{OK: false, Message: "Connected but no authenticated user returned by /api/profile/"}
+	}
+
+	return CheckResult{OK: true, Message: fmt.Sprintf("Authenticated as %q", profile.Username)}
 }
 
 // GetUntaggedDocuments retrieves documents that have no tags
