@@ -1,0 +1,131 @@
+{
+  "nav": {
+    "queue": "Queue",
+    "settings": "Settings",
+    "logs": "Logs"
+  },
+  "app": {
+    "title": "Paperless Tagger",
+    "subtitle": "LLM-assisted Document Auto-tagging"
+  },
+  "queue": {
+    "title": "Processing Queue",
+    "triggerScan": "Scan Now",
+    "scanning": "Scanning...",
+    "scanTriggered": "Scan triggered",
+    "enqueue": "Add Document",
+    "documentId": "Document ID",
+    "add": "Add",
+    "adding": "Adding...",
+    "cancel": "Cancel",
+    "cancelling": "Cancelling...",
+    "noJobs": "Queue is empty",
+    "status": {
+      "queued": "Queued",
+      "processing": "Processing",
+      "completed": "Completed",
+      "failed": "Failed"
+    },
+    "stats": {
+      "queued": "Queued",
+      "processing": "Processing",
+      "completed": "Completed",
+      "failed": "Failed"
+    },
+    "document": "Document",
+    "createdAt": "Queued At",
+    "startedAt": "Started At",
+    "completedAt": "Completed At",
+    "error": "Error",
+    "result": "Extracted Fields",
+    "viewResult": "View Result",
+    "all": "All",
+    "filterByStatus": "Filter by status",
+    "retry": "Retry",
+    "retrying": "Retrying...",
+    "retryFailed": "Retry Failed",
+    "id": "ID"
+  },
+  "settings": {
+    "title": "Settings",
+    "save": "Save Settings",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "saveError": "Save failed",
+    "paperless": {
+      "title": "Paperless-ngx Connection",
+      "baseUrl": "Server URL",
+      "baseUrlPlaceholder": "http://localhost:8000",
+      "apiKey": "API Key",
+      "apiKeyPlaceholder": "Enter API Token",
+      "check": "Test Connection",
+      "checking": "Testing..."
+    },
+    "ocrLlm": {
+      "title": "OCR Model (Vision)",
+      "baseUrl": "API Base URL",
+      "baseUrlPlaceholder": "https://api.openai.com/v1",
+      "apiKey": "API Key",
+      "apiKeyPlaceholder": "sk-...",
+      "model": "Model Name",
+      "modelPlaceholder": "gpt-4o",
+      "maxPages": "Max Pages (0 = all)",
+      "pagesPerBatch": "Pages Per Batch",
+      "maxTokens": "Max Output Tokens Per Page",
+      "check": "Test Connection",
+      "checking": "Testing..."
+    },
+    "extrLlm": {
+      "title": "Extraction Model",
+      "baseUrl": "API Base URL",
+      "baseUrlPlaceholder": "https://api.openai.com/v1",
+      "apiKey": "API Key",
+      "apiKeyPlaceholder": "sk-...",
+      "model": "Model Name",
+      "modelPlaceholder": "gpt-4o-mini",
+      "maxInputChars": "Max Input Chars Per Round",
+      "maxTokens": "Max Output Tokens",
+      "maxRounds": "Max Extraction Rounds",
+      "maxRoundsHelp": "Max conversation rounds when LLM requests more pages",
+      "check": "Test Connection",
+      "checking": "Testing..."
+    },
+    "scanner": {
+      "title": "Auto Scan",
+      "interval": "Scan Interval (minutes)",
+      "intervalHelp": "How often to scan for untagged documents"
+    },
+    "queue": {
+      "title": "Queue Settings",
+      "concurrency": "Concurrency",
+      "concurrencyHelp": "Maximum number of documents to process simultaneously"
+    },
+    "prompt": {
+      "title": "System Prompt",
+      "restore": "Restore Default",
+      "restoring": "Restoring...",
+      "placeholders": "Available Placeholders",
+      "placeholderTags": "{tags} — list of existing tags",
+      "placeholderCorrespondents": "{correspondents} — list of existing correspondents",
+      "placeholderDocumentTypes": "{document_types} — list of existing document types",
+      "needMoreNote": "When the LLM has seen too little to answer, it replies {\"_need_more\": true} to request more pages. This triggers a new conversation round, reusing prior context for caching."
+    },
+    "check": {
+      "success": "Connection successful",
+      "failed": "Connection failed"
+    }
+  },
+  "logs": {
+    "title": "Logs",
+    "noLogs": "No logs yet",
+    "clear": "Clear"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "close": "Close",
+    "language": "Language"
+  }
+}

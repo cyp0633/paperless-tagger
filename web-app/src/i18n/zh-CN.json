@@ -1,0 +1,131 @@
+{
+  "nav": {
+    "queue": "处理队列",
+    "settings": "系统设置",
+    "logs": "运行日志"
+  },
+  "app": {
+    "title": "Paperless Tagger",
+    "subtitle": "LLM 辅助文档自动标签系统"
+  },
+  "queue": {
+    "title": "处理队列",
+    "triggerScan": "立即扫描",
+    "scanning": "正在扫描...",
+    "scanTriggered": "扫描已触发",
+    "enqueue": "手动入队",
+    "documentId": "文档 ID",
+    "add": "添加",
+    "adding": "添加中...",
+    "cancel": "取消",
+    "cancelling": "取消中...",
+    "noJobs": "队列为空",
+    "status": {
+      "queued": "排队中",
+      "processing": "处理中",
+      "completed": "已完成",
+      "failed": "失败"
+    },
+    "stats": {
+      "queued": "排队",
+      "processing": "处理中",
+      "completed": "已完成",
+      "failed": "失败"
+    },
+    "document": "文档",
+    "createdAt": "入队时间",
+    "startedAt": "开始时间",
+    "completedAt": "完成时间",
+    "error": "错误信息",
+    "result": "提取结果",
+    "viewResult": "查看结果",
+    "all": "全部",
+    "filterByStatus": "按状态筛选",
+    "retry": "重试",
+    "retrying": "重试中...",
+    "retryFailed": "重试失败",
+    "id": "ID"
+  },
+  "settings": {
+    "title": "系统设置",
+    "save": "保存设置",
+    "saving": "保存中...",
+    "saved": "已保存",
+    "saveError": "保存失败",
+    "paperless": {
+      "title": "Paperless-ngx 连接",
+      "baseUrl": "服务器地址",
+      "baseUrlPlaceholder": "http://localhost:8000",
+      "apiKey": "API 密钥",
+      "apiKeyPlaceholder": "输入 API Token",
+      "check": "测试连接",
+      "checking": "测试中..."
+    },
+    "ocrLlm": {
+      "title": "OCR 模型配置（视觉模型）",
+      "baseUrl": "API 地址",
+      "baseUrlPlaceholder": "https://api.openai.com/v1",
+      "apiKey": "API 密钥",
+      "apiKeyPlaceholder": "sk-...",
+      "model": "模型名称",
+      "modelPlaceholder": "gpt-4o",
+      "maxPages": "最大处理页数（0=全部）",
+      "pagesPerBatch": "每批页数",
+      "maxTokens": "每页最大输出 Token",
+      "check": "测试连接",
+      "checking": "测试中..."
+    },
+    "extrLlm": {
+      "title": "提取模型配置",
+      "baseUrl": "API 地址",
+      "baseUrlPlaceholder": "https://api.openai.com/v1",
+      "apiKey": "API 密钥",
+      "apiKeyPlaceholder": "sk-...",
+      "model": "模型名称",
+      "modelPlaceholder": "gpt-4o-mini",
+      "maxInputChars": "每轮最大输入字符数",
+      "maxTokens": "最大输出 Token",
+      "maxRounds": "最大提取轮次",
+      "maxRoundsHelp": "LLM 请求更多页时的最大对话轮次",
+      "check": "测试连接",
+      "checking": "测试中..."
+    },
+    "scanner": {
+      "title": "自动扫描",
+      "interval": "扫描间隔（分钟）",
+      "intervalHelp": "每隔多少分钟自动扫描一次未标记文档"
+    },
+    "queue": {
+      "title": "队列设置",
+      "concurrency": "并发处理数",
+      "concurrencyHelp": "同时处理的最大文档数量"
+    },
+    "prompt": {
+      "title": "系统提示词",
+      "restore": "还原默认",
+      "restoring": "还原中...",
+      "placeholders": "可用占位符",
+      "placeholderTags": "{tags} — 现有标签列表",
+      "placeholderCorrespondents": "{correspondents} — 现有联系人列表",
+      "placeholderDocumentTypes": "{document_types} — 现有文档类型列表",
+      "needMoreNote": "当 LLM 内容不足时，它会回复 {\"_need_more\": true} 来请求后续页面，这将触发新一轮对话，利用上下文缓存节省 Token。"
+    },
+    "check": {
+      "success": "连接成功",
+      "failed": "连接失败"
+    }
+  },
+  "logs": {
+    "title": "运行日志",
+    "noLogs": "暂无日志",
+    "clear": "清空"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "confirm": "确认",
+    "close": "关闭",
+    "language": "语言"
+  }
+}
