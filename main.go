@@ -4,6 +4,7 @@ import (
 	"embed"
 	"io/fs"
 	"log"
+	"mime"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -96,6 +97,10 @@ func main() {
 	if err != nil {
 		log.Printf("[Main] Warning: could not embed frontend assets: %v", err)
 	} else {
+		indexHTML, readIndexErr := fs.ReadFile(distFS, "index.html")
+		if readIndexErr != nil {
+			log.Printf("[Main] Warning: could not read frontend index.html: %v", readIndexErr)
+		}
 		r.NoRoute(func(c *gin.Context) {
 			if len(c.Request.URL.Path) > 4 && c.Request.URL.Path[:5] == "/api/" {
 				c.JSON(http.StatusNotFound, gin.H{"error": "not found"})
@@ -107,11 +112,28 @@ func main() {
 			}
 			f, err := distFS.Open(filePath[1:])
 			if err != nil {
-				c.FileFromFS("index.html", http.FS(distFS))
+				if readIndexErr != nil {
+					c.JSON(http.StatusNotFound, gin.H{"error": "not found"})
+					return
+				}
+				c.Data(http.StatusOK, "text/html; charset=utf-8", indexHTML)
 				return
 			}
 			f.Close()
-			c.FileFromFS(filePath[1:], http.FS(distFS))
+			assetContent, readAssetErr := fs.ReadFile(distFS, filePath[1:])
+			if readAssetErr != nil {
+				if readIndexErr != nil {
+					c.JSON(http.StatusNotFound, gin.H{"error": "not found"})
+					return
+				}
+				c.Data(http.StatusOK, "text/html; charset=utf-8", indexHTML)
+				return
+			}
+			contentType := mime.TypeByExtension(filepath.Ext(filePath))
+			if contentType == "" {
+				contentType = "application/octet-stream"
+			}
+			c.Data(http.StatusOK, contentType, assetContent)
 		})
 	}
 
