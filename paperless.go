@@ -77,17 +77,7 @@ func (c *PaperlessClient) CheckAvailability() CheckResult {
 		return CheckResult{OK: false, Message: fmt.Sprintf("Unexpected status: %d", resp.StatusCode)}
 	}
 
-	var profile struct {
-		Username string `json:"username"`
-	}
-	if err := json.NewDecoder(resp.Body).Decode(&profile); err != nil {
-		return CheckResult{OK: false, Message: fmt.Sprintf("Connected but invalid response from /api/profile/: %v", err)}
-	}
-	if profile.Username == "" {
-		return CheckResult{OK: false, Message: "Connected but no authenticated user returned by /api/profile/"}
-	}
-
-	return CheckResult{OK: true, Message: fmt.Sprintf("Authenticated as %q", profile.Username)}
+	return CheckResult{OK: true, Message: "Connected and authenticated"}
 }
 
 // GetUntaggedDocuments retrieves documents that have no tags
