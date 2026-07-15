@@ -144,6 +144,11 @@ func (q *Queue) Enqueue(docID int, docTitle string) (*Job, error) {
 		}
 	}
 
+	return q.enqueueLocked(docID, docTitle), nil
+}
+
+// enqueueLocked adds a job while q.mu is held.
+func (q *Queue) enqueueLocked(docID int, docTitle string) *Job {
 	now := time.Now()
 	job := &Job{
 		ID:            q.nextID,
@@ -163,12 +168,15 @@ func (q *Queue) Enqueue(docID int, docTitle string) (*Job, error) {
 	case q.workerLoop <- struct{}{}:
 	default:
 	}
-	return job, nil
+	return job
 }
 
-// Retry enqueues a new job for the same document as a failed job.
+// Retry enqueues a new job for the same document as a failed job. If the
+// scanner already enqueued that document, the existing active job is returned.
 func (q *Queue) Retry(jobID uint) (*Job, error) {
 	q.mu.Lock()
+	defer q.mu.Unlock()
+
 	var found *Job
 	for _, j := range q.jobs {
 		if j.ID == jobID {
@@ -176,7 +184,6 @@ func (q *Queue) Retry(jobID uint) (*Job, error) {
 			break
 		}
 	}
-	q.mu.Unlock()
 
 	if found == nil {
 		return nil, fmt.Errorf("job %d not found", jobID)
@@ -184,8 +191,16 @@ func (q *Queue) Retry(jobID uint) (*Job, error) {
 	if found.Status != JobStatusFailed {
 		return nil, fmt.Errorf("job %d cannot be retried (status: %s)", jobID, found.Status)
 	}
+	for _, job := range q.jobs {
+		if job.DocumentID == found.DocumentID &&
+			(job.Status == JobStatusQueued || job.Status == JobStatusProcessing) {
+			log.Printf("[Queue] Retry for failed job %d reusing active job %d (status: %s)", found.ID, job.ID, job.Status)
+			return job, nil
+		}
+	}
+
 	log.Printf("[Queue] Retrying document %d (%s) from failed job %d", found.DocumentID, found.DocumentTitle, found.ID)
-	return q.Enqueue(found.DocumentID, found.DocumentTitle)
+	return q.enqueueLocked(found.DocumentID, found.DocumentTitle), nil
 }
 
 // Cancel removes a queued job (cannot cancel processing jobs)
